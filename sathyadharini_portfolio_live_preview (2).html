@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sathyadharini Srinivasan | Portfolio</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;color:#fff;overflow-x:hidden;scroll-snap-type:y mandatory;-webkit-scroll-snap-type:y mandatory;scroll-behavior:smooth}
+    a{color:#9fb4ff;text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    /* Ensure content is visible even if JS/observer fails */
+    body.nojs section{opacity:1 !important;transform:none !important}
+
+    section{min-height:100vh;padding:40px 20px;display:flex;flex-direction:column;justify-content:center;align-items:center;scroll-snap-align:start;scroll-snap-stop:always;opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
+    section.visible{opacity:1;transform:translateY(0)}
+    .container{max-width:1200px;width:100%}
+
+    h1{font-size:3rem;margin-bottom:12px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    h2{font-size:2rem;margin-bottom:24px;background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+    #hero{background:linear-gradient(135deg,rgba(26,26,46,.9) 0%,rgba(22,33,62,.9) 100%);text-align:center}
+    .hero-content p{font-size:1.15rem;color:#b8b8b8;margin-top:14px;line-height:1.6}
+    .contact-links{display:flex;gap:22px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+    .contact-link{color:#9fb4ff;font-size:1rem}
+    .cta-button{margin-top:26px;padding:12px 28px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border:none;border-radius:40px;color:#fff;font-size:1rem;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}
+    .cta-button:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(102,126,234,.35)}
+
+    #about{position:relative}
+    #about::before{content:"";position:absolute;inset:0;background:url('https://i.imgur.com/knfqXLM.jpg') center/cover no-repeat;z-index:0;filter:brightness(.45)}
+    #about .container{position:relative;z-index:1}
+    .about-content{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center}
+    .about-text p{font-size:1.05rem;line-height:1.8;color:#e7e7e7;margin-bottom:14px}
+    .skills-section{margin-top:24px}
+    .skills-section h3{color:#cbd5ff;font-size:1.15rem;margin-bottom:12px}
+    .skill-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+    .skill-tag{background:rgba(102,126,234,.18);padding:7px 12px;border-radius:20px;font-size:.9rem;border:1px solid rgba(102,126,234,.28)}
+    .profile-image{width:100%;height:430px;border-radius:18px;object-fit:cover;box-shadow:0 10px 40px rgba(102,126,234,.35)}
+
+    .timeline-item{background:rgba(255,255,255,.05);padding:24px;border-radius:14px;margin-bottom:22px;border-left:4px solid #667eea;transition:transform .2s ease,background .2s ease}
+    .timeline-item:hover{transform:translateX(6px);background:rgba(255,255,255,.08)}
+    .timeline-item .year{font-weight:700;color:#f5576c;font-size:1rem;margin-bottom:8px;display:inline-block}
+
+    .exp-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-left:4px solid #667eea;padding:24px;border-radius:16px;margin-bottom:26px}
+    .exp-buttons a{padding:10px 18px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:8px;color:#fff;font-weight:500;margin-right:10px;display:inline-block;margin-top:8px}
+    .fedex-logo{height:24px;vertical-align:middle;margin-left:8px}
+
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:28px}
+    .project-card{background:rgba(255,255,255,.05);padding:26px;border-radius:16px;border:1px solid rgba(255,255,255,.09);transition:transform .2s ease,box-shadow .2s ease}
+    .project-card:hover{transform:translateY(-6px);box-shadow:0 16px 36px rgba(102,126,234,.18);border-color:#667eea}
+    .tag{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:6px 14px;margin:4px 4px 0 0;display:inline-block;border-radius:18px;font-size:.85rem}
+
+    .passions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
+    figure{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden}
+    figure img{width:100%;height:280px;object-fit:cover;display:block}
+    figcaption{font-size:1rem;color:#ddd;padding:12px 14px;border-top:1px solid rgba(255,255,255,.08)}
+
+    .docs-preview img{max-width:600px;width:100%;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.35);margin-bottom:16px}
+    /* Soft transitions between key sections */
+    .soft-transition::before,
+    .soft-transition::after{content:"";position:absolute;left:0;right:0;height:90px;pointer-events:none;z-index:0}
+    .soft-transition::before{top:0;background:linear-gradient(180deg, rgba(10,10,10,1) 0%, rgba(10,10,10,0) 100%)}
+    .soft-transition::after{bottom:0;background:linear-gradient(0deg, rgba(10,10,10,1) 0%, rgba(10,10,10,0) 100%)}
+
+    /* Slightly tighter content area for these sections while keeping full-screen snap */
+    #education.soft-transition .container,
+    #experience.soft-transition .container,
+    #research.soft-transition .container,
+    #passions.soft-transition .container{max-width:1100px}
+  </style>
+</head>
+<body class="nojs">
+  <section id="hero" class="visible">
+    <div class="hero-content container">
+      <h1>Sathyadharini Srinivasan</h1>
+      <p>AI Researcher • Machine Learning Engineer • Full-Stack Developer</p>
+      <p>Building intelligent systems that bridge quantum computing and artificial intelligence.</p>
+      <div class="contact-links">
+        <a class="contact-link" href="mailto:sathprad10@gmail.com">sathprad10@gmail.com</a>
+        <a class="contact-link" href="https://github.com/sathya100" target="_blank" rel="noopener">github.com/sathya100</a>
+        <a class="contact-link" href="tel:+16027486390">+1 (602) 748-6390</a>
+      </div>
+      <button class="cta-button" onclick="document.querySelector('#about').scrollIntoView({behavior:'smooth'});">Explore My Journey</button>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="visible">
+    <div class="container">
+      <h2>About Me</h2>
+      <div class="about-content">
+        <div class="about-text">
+          <p>Hi! I'm Sathyadharini, a graduate student at the University of Florida pursuing my Master's in Artificial Intelligence Systems. My passion lies at the intersection of quantum computing, machine learning, and real-world problem solving.</p>
+          <p>With a background in Information Technology from Anna University and hands-on experience as a Summer Research Intern at FedEx, I've developed expertise in building intelligent systems that optimize processes and deliver meaningful impact. My research in quantum-enhanced drug discovery has been accepted at ICCIS 2025.</p>
+          <p>I believe in leveraging cutting-edge AI technologies to solve complex challenges—from optimizing delivery routes to predicting drug efficacy. Outside research and coding, I love community service and organizing tech events.</p>
+        <div class="skills-section">
+            <h3>Technical Arsenal</h3>
+            <div class="skill-sub">
+              <strong>Languages:</strong>
+              <div class="skill-tags">
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">C++</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">SQL</span>
+                <span class="skill-tag">Java</span>
+                <span class="skill-tag">Bash</span>
+              </div>
+            </div>
+            <div class="skill-sub" style="margin-top:10px;">
+              <strong>AI/ML Frameworks:</strong>
+              <div class="skill-tags">
+                <span class="skill-tag">TensorFlow</span>
+                <span class="skill-tag">PyTorch</span>
+                <span class="skill-tag">Keras</span>
+                <span class="skill-tag">Scikit-learn</span>
+                <span class="skill-tag">Hugging Face</span>
+                <span class="skill-tag">Qiskit</span>
+              </div>
+            </div>
+            <div class="skill-sub" style="margin-top:10px;">
+              <strong>Technologies:</strong>
+              <div class="skill-tags">
+                <span class="skill-tag">Django</span>
+                <span class="skill-tag">Flask</span>
+                <span class="skill-tag">Node.js</span>
+                <span class="skill-tag">Docker</span>
+                <span class="skill-tag">AWS</span>
+                <span class="skill-tag">MongoDB</span>
+                <span class="skill-tag">PostgreSQL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <img class="profile-image" src="https://i.imgur.com/xhLnyJt.jpg" alt="Sathyadharini Srinivasan profile photo" />
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education" class="soft-transition visible">
+    <div class="container">
+      <h2>Education</h2>
+      <div class="timeline-item"><span class="year">Aug 2025 – Dec 2026</span><h3>Master of Science — Artificial Intelligence Systems</h3><h4>University of Florida</h4><p>Specializing in advanced AI systems; focus on machine learning, trustworthy AI, and quantum computing applications.</p></div>
+      <div class="timeline-item"><span class="year">Oct 2021 – Jul 2025</span><h3>Bachelor of Technology — Information Technology</h3><h4>Anna University</h4><p>Strong foundations in CS with specialization in AI/ML and active involvement in tech communities.</p></div>
+      <div class="timeline-item"><span class="year">Academic Excellence</span><h3>Secondary Education — Saratha International School (CBSE)</h3><p>Class 12 Score: <strong>96.5%</strong>. All India Rank 2 (99th percentile) in Mathematics & Chemistry.</p></div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" class="soft-transition visible">
+    <div class="container">
+      <h2>Experience</h2>
+      <div class="exp-card">
+        <h3>Research Intern — FedEx <img class="fedex-logo" src="https://i.imgur.com/OyZdSwu.jpg" onerror="this.onerror=null;this.src='https://i.imgur.com/OyZdSwu.png'" alt="FedEx Logo"/></h3>
+        <p>Built a dynamic route planning system using voice NER + Google Maps API; evaluated metaheuristics (ACO/GA/SA) achieving high routing efficiency and ~30% compute reduction.</p>
+        <ul>
+          <li>Designed NER pipeline to parse driver voice inputs.</li>
+          <li>Integrated multi-constraint routing with Google Maps APIs.</li>
+          <li>Benchmarked ACO/GA/SA for speed vs. quality trade-offs.</li>
+        </ul>
+
+        <!-- Buttons -->
+        <div class="exp-buttons">
+          <a href="#" onclick="window.open('https://sathya100.github.io/FedEx_Intern/','_blank');return false;">View Detailed Experience</a>
+          <a href="#" onclick="window.open('https://drive.google.com/file/d/1m7KSPGOPD7A5CWSZmRBfDS1awj_kXN2z/view?usp=sharing','_blank');return false;">Intern Report</a>
+          <a href="#" onclick="window.open('https://drive.google.com/file/d/1jDq15PY2LB8adY7bukzuLI0ZMgwwAyXx/view?usp=sharing','_blank');return false;">Internship Certificate</a>
+        </div>
+
+        <!-- PROJECT HIGHLIGHTS MERGED -->
+        <div style="margin-top:18px;padding-top:16px;border-top:1px dashed rgba(255,255,255,.15)">
+          <h3 style="margin-bottom:10px">🚚 Project Highlights — Dynamic TSP for FedEx Routing</h3>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px">
+            <div>
+              <h4 style="margin-bottom:6px">Input Data (Google Maps + Voice)</h4>
+              <ul style="margin-left:18px;line-height:1.7">
+                <li>Voice calls transcribed with <strong>OpenAI Whisper</strong>.</li>
+                <li>Addresses extracted via <strong>spaCy NER</strong> (GPE, FAC, ORG, CARDINAL).</li>
+                <li>Addresses validated & geocoded using Google Maps APIs.</li>
+                <li>Live traffic time matrix from Google Maps Distance Matrix API.</li>
+              </ul>
+            </div>
+            <div>
+              <h4 style="margin-bottom:6px">Output (Routing Optimization)</h4>
+              <ul style="margin-left:18px;line-height:1.7">
+                <li>Optimized stop order + interactive route map.</li>
+                <li><strong>Dynamic re-plan</strong> when matrix correlation &lt; <strong>0.97</strong>.</li>
+                <li><strong>ACO</strong> ≈ 99% of optimal, ~27× faster.</li>
+                <li><strong>Genetic Algorithm</strong> ≈ 93% of optimal, ~14× faster.</li>
+                <li><strong>Nearest Neighbor</strong> ≈ 89% of optimal (instant, less accurate).</li>
+              </ul>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:14px">
+            <figure style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden">
+              <img src="https://i.imgur.com/9N0Tl2M.jpg" onerror="this.onerror=null;this.src='https://i.imgur.com/9N0Tl2M.png'" alt="Google Maps input / time matrix" style="width:100%;height:220px;object-fit:cover">
+              <figcaption style="font-size:.9rem;color:#cfcfcf;padding:10px 12px;border-top:1px solid rgba(255,255,255,.08)"><strong>Input:</strong> Google Maps geocoding & Distance Matrix (live traffic).</figcaption>
+            </figure>
+            <figure style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden">
+              <img src="https://i.imgur.com/vcxBOJ2.jpg" onerror="this.onerror=null;this.src='https://i.imgur.com/vcxBOJ2.png'" alt="Optimized routing output" style="width:100%;height:220px;object-fit:cover">
+              <figcaption style="font-size:.9rem;color:#cfcfcf;padding:10px 12px;border-top:1px solid rgba(255,255,255,.08)"><strong>Output:</strong> Optimized route order (e.g., ACO) with polyline overlay.</figcaption>
+            </figure>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:12px;font-size:.9rem">
+            <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 10px">✅ Near-optimal quality</div>
+            <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 10px">⚡ Real-time, traffic-aware</div>
+            <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 10px">🔁 Correlation-based re-planning</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- RESEARCH -->
+  <section id="research" class="soft-transition visible">
+    <div class="container">
+      <h2>Undergraduate Research</h2>
+      <div class="exp-card">
+        <h3>Quantum-Enhanced Drug Discovery</h3>
+        <p>Published with <strong>Springer (ICCIS 2025)</strong>. Combined quantum neural networks with ML for personalized drug efficacy prediction; reduced training time by 50% while reaching 81.25% accuracy.</p>
+        <img src="https://i.imgur.com/N7gtr1O.jpg" alt="Final presentation" style="max-width:480px;width:100%;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.35);margin:14px 0;"/>
+        <div class="exp-buttons">
+          <a href="#" onclick="window.open('https://drive.google.com/file/d/1edqqxrUNYLTkuToDiJL3_4w_4aRjUhiK/view?usp=sharing','_blank');return false;">Research Report</a>
+          <a href="#" onclick="window.open('https://link.springer.com','_blank');return false;">Springer Publication</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACHIEVEMENTS -->
+  <section id="achievements" class="visible">
+    <div class="container">
+      <h2>Achievements & Leadership</h2>
+      <div class="timeline-item"><h3>Published Researcher</h3><p><strong>Drug Efficacy Prediction Using Hybrid Quantum and Machine Learning Models</strong> — accepted at ICCIS 2025 (Springer).</p><p><strong>Automation in E-Commerce Product Evaluation</strong> — published in IJMER (sentiment analysis & recommendation).</p></div>
+      <div class="timeline-item"><h3>CTF Techops Lead</h3><p>Designed and maintained backend systems powering campus-wide tech events. Automated hosting pipelines for 1000+ participants.</p></div>
+      <div class="timeline-item"><h3>Top 2 University Ranking</h3><p>Ranked Top 2 in CEG Tech Forum for UDHIRA — a social-impact blood donation application connecting donors with patients.</p></div>
+      <div class="timeline-item"><h3>Academic Excellence</h3><p>All India Rank 2 (99th percentile) in Mathematics & Chemistry, CBSE Class 12 AISSCE.</p></div>
+      <div class="timeline-item"><h3>NSS Coordinator</h3><p>Co-organized 7-day rural camps near Chennai: digital training, tree plantation, and school renovation projects.</p></div>
+      <div class="timeline-item"><h3>Industrial Relations, ISTA</h3><p>Ran workshops and industry interactions, building partnerships that bridged academia and industry for students.</p></div>
+    </div>
+  </section>
+
+  <!-- PASSIONS -->
+  <section id="passions" class="soft-transition visible">
+    <div class="container">
+      <h2>What I Love</h2>
+      <div class="passions-grid">
+        <figure>
+          <img src="https://i.imgur.com/TLJh1qU.jpg" alt="NSS Camp" />
+          <figcaption>NSS work camp — Thiruvellavoyal, Tamil Nadu.</figcaption>
+        </figure>
+        <figure>
+          <img src="https://i.imgur.com/N7gtr1O.jpg" alt="Final year presentation" />
+          <figcaption>Final B.Tech day — quantum drug discovery presentation.</figcaption>
+        </figure>
+        <figure>
+          <img src="https://i.imgur.com/bocQtQL.jpg" alt="Coastal hike" />
+          <figcaption>Hike before moving to the U.S. — coastal trail.</figcaption>
+        </figure>
+        <figure>
+          <img src="https://i.imgur.com/Ulq8MRV.jpg" alt="Forest hike" />
+          <figcaption>Hike — forest trail in India.</figcaption>
+        </figure>
+        <figure>
+          <img src="https://i.imgur.com/b5aQVb5.jpg" alt="Food photography" />
+          <figcaption>Food photography — garlic bread bun.</figcaption>
+        </figure>
+        <figure>
+          <img src="https://i.imgur.com/QLOu4bv.jpg" alt="Breakfast spread" />
+          <figcaption>Breakfast spread — home-made eggs & toast.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="soft-transition visible">
+    <div class="container">
+      <h2>Featured Projects</h2>
+      <div class="projects-grid">
+        <div class="project-card">
+          <h3>Quantum Drug Discovery</h3>
+          <p>Quantum-enhanced personalized drug ranking for cancer patients with co-morbidities. Achieved <strong>81.25% accuracy</strong> and cut training time by <strong>50%</strong> using quantum neural networks + ML.</p>
+          <div class="tech-tags">
+            <span class="tag">Qiskit</span>
+            <span class="tag">PyTorch</span>
+            <span class="tag">Keras</span>
+            <span class="tag">Quantum ML</span>
+          </div>
+        </div>
+        <div class="project-card">
+          <h3>Smart Route Optimization</h3>
+          <p>Dynamic route planning (FedEx) using voice NER + Google Maps APIs. Benchmarked ACO / GA / SA; delivered ~<strong>30%</strong> compute reduction with high routing efficiency.</p>
+          <div class="tech-tags">
+            <span class="tag">NLP</span>
+            <span class="tag">Google Maps API</span>
+            <span class="tag">ACO/GA/SA</span>
+            <span class="tag">Python</span>
+          </div>
+        </div>
+        <div class="project-card">
+          <h3>Intelligent Shopping Assistant</h3>
+          <p>Web automation + ML recommender that ranks products by price and sentiment. Used <strong>RoBERTa</strong> for sentiment and <strong>K-means</strong> for personalization.</p>
+          <div class="tech-tags">
+            <span class="tag">Selenium</span>
+            <span class="tag">Hugging Face</span>
+            <span class="tag">RoBERTa</span>
+            <span class="tag">K-means</span>
+          </div>
+        </div>
+        <div class="project-card">
+          <h3>Green Route Optimizer</h3>
+          <p>Computer vision framework to compute Green View Index (GVI) and generate eco-friendly routes by integrating multiple Google Maps APIs with segmentation.</p>
+          <div class="tech-tags">
+            <span class="tag">Computer Vision</span>
+            <span class="tag">Segmentation</span>
+            <span class="tag">Google Maps</span>
+            <span class="tag">Web</span>
+          </div>
+        </div>
+        <div class="project-card">
+          <h3>Pharmacy Management System</h3>
+          <p>Inventory and sales management for pharmacies; streamlined tracking from receipt to dispensation with robust server-side logic.</p>
+          <div class="tech-tags">
+            <span class="tag">Java</span>
+            <span class="tag">JSP</span>
+            <span class="tag">SQL</span>
+            <span class="tag">jQuery</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOCUMENTS / RESUME PREVIEW -->
+  <section id="docs" class="visible">
+    <div class="container">
+      <h2>Documents</h2>
+      <div class="docs-preview">
+        <img src="https://i.imgur.com/yU53ZDq.jpg" alt="Resume preview image" />
+      </div>
+      <p><a href="#" onclick="window.open('https://drive.google.com/file/d/1dntEXdLW0t9bpezcJ8mCbe8M-3Aqzvit/view?usp=sharing','_blank');return false;">Open Resume (PDF)</a></p>
+      <p><a href="#" onclick="window.open('https://drive.google.com/file/d/1jDq15PY2LB8adY7bukzuLI0ZMgwwAyXx/view?usp=sharing','_blank');return false;">Internship Certificate</a></p>
+      <p><a href="#" onclick="window.open('https://drive.google.com/file/d/1db0rsD51hTIQv-QLdoeU8fXSaqVJMNYt/view?usp=sharing','_blank');return false;">Research Work Document</a></p>
+    </div>
+  </section>
+
+  <script>
+    // Remove fallback class and enable reveals safely
+    window.addEventListener('DOMContentLoaded', ()=>{
+      document.body.classList.remove('nojs');
+      try{
+        const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.12,rootMargin:'0px 0px -60px 0px'});
+        document.querySelectorAll('section').forEach(s=>observer.observe(s));
+      }catch(err){
+        document.querySelectorAll('section').forEach(s=>s.classList.add('visible'));
+      }
+    });
+  </script>
+</body>
+</html>
