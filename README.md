@@ -86,7 +86,7 @@ To deploy this portfolio on GitHub Pages:
 
 - Email: **sathprad10@gmail.com**
 - GitHub: **https://github.com/sathya100**
-- Phone: **+1 (602) 748-6390**
+- 
 
 ---
 
