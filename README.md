@@ -77,7 +77,7 @@ To deploy this portfolio on GitHub Pages:
 
 ## 🔗 Live Demo
 
-👉 Hosted at: `https://sathya100.github.io/`  
+👉 Hosted at: `https://sathya100.github.io/SAT_PORT/`  
 *(Update link if needed)*
 
 ---
