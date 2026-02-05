@@ -428,40 +428,59 @@
       background: var(--card);
       border: 1px solid var(--border);
       aspect-ratio: 16/10;
+      transition: all 0.4s;
     }
-    .project-visual iframe {
+    .project-visual:hover {
+      border-color: rgba(255,255,255,0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .project-preview-card {
       width: 100%;
       height: 100%;
-      border: none;
-    }
-    .project-visual-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.8) 100%);
       display: flex;
-      align-items: flex-end;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
-      padding-bottom: 24px;
-      opacity: 0;
-      transition: opacity 0.4s;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      padding: 40px;
+      text-align: center;
     }
-    .project-visual:hover .project-visual-overlay {
-      opacity: 1;
+    .preview-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      filter: grayscale(20%);
+      transition: all 0.3s;
     }
-    .project-expand-btn {
-      padding: 12px 28px;
-      background: var(--text);
-      color: var(--bg);
-      border: none;
-      border-radius: 30px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: inherit;
-      transition: transform 0.3s;
+    .project-visual:hover .preview-icon {
+      filter: grayscale(0%);
+      transform: scale(1.1);
     }
-    .project-expand-btn:hover {
-      transform: scale(1.05);
+    .preview-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .preview-subtitle {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 24px;
+    }
+    .preview-stats {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .preview-stats span {
+      padding: 8px 16px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.7);
     }
     .project-info {
       padding: 20px 0;
@@ -729,61 +748,6 @@
       font-size: 0.85rem;
     }
 
-    /* Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 2000;
-      background: rgba(0,0,0,0.95);
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    .modal.active { display: flex; }
-    .modal-content {
-      width: 95%;
-      height: 95%;
-      background: var(--card);
-      border-radius: 20px;
-      overflow: hidden;
-      position: relative;
-      border: 1px solid var(--border);
-    }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 28px;
-      border-bottom: 1px solid var(--border);
-    }
-    .modal-header h3 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.2rem;
-    }
-    .modal-close {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .modal-close:hover {
-      background: var(--text);
-      color: var(--bg);
-    }
-    .modal-body {
-      height: calc(100% - 70px);
-    }
-    .modal-body iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
 
     /* Responsive */
     @media (max-width: 1024px) {
@@ -983,14 +947,18 @@
       <div class="featured-projects">
         <!-- Quantum Drug Discovery -->
         <div class="project-item">
-          <div class="project-visual">
-            <iframe src="hw2/visualizer.html" loading="lazy"></iframe>
-            <div class="project-visual-overlay">
-              <button class="project-expand-btn" onclick="openModal('quantum-modal')">
-                Open Full View
-              </button>
+          <a href="hw2/visualizer.html" target="_blank" class="project-visual" style="text-decoration:none; display:block;">
+            <div class="project-preview-card">
+              <div class="preview-icon">⚛️</div>
+              <div class="preview-title">Quantum Drug Ranking System</div>
+              <div class="preview-subtitle">Click to explore interactive visualization</div>
+              <div class="preview-stats">
+                <span>5 Modules</span>
+                <span>81% QCNN Accuracy</span>
+                <span>TOPSIS Ranking</span>
+              </div>
             </div>
-          </div>
+          </a>
           <div class="project-info">
             <div class="project-number">PROJECT 01</div>
             <h3 class="project-title">Quantum-Enhanced Drug Ranking System</h3>
@@ -1004,7 +972,7 @@
               <span class="project-tag">XGBoost</span>
               <span class="project-tag">TOPSIS</span>
             </div>
-            <a href="#" class="project-link" onclick="openModal('quantum-modal'); return false;">
+            <a href="hw2/visualizer.html" target="_blank" class="project-link">
               Explore Project <span>→</span>
             </a>
           </div>
@@ -1012,14 +980,18 @@
 
         <!-- Amazon Analysis -->
         <div class="project-item">
-          <div class="project-visual">
-            <iframe src="main1amazon/project_visualizer.html" loading="lazy"></iframe>
-            <div class="project-visual-overlay">
-              <button class="project-expand-btn" onclick="openModal('amazon-modal')">
-                Open Full View
-              </button>
+          <a href="main1amazon/project_visualizer.html" target="_blank" class="project-visual" style="text-decoration:none; display:block;">
+            <div class="project-preview-card">
+              <div class="preview-icon">🛒</div>
+              <div class="preview-title">Amazon Product Analysis Pipeline</div>
+              <div class="preview-subtitle">Click to explore interactive visualization</div>
+              <div class="preview-stats">
+                <span>ETL Pipeline</span>
+                <span>RoBERTa NLP</span>
+                <span>K-Means Clustering</span>
+              </div>
             </div>
-          </div>
+          </a>
           <div class="project-info">
             <div class="project-number">PROJECT 02</div>
             <h3 class="project-title">Amazon Product Analysis Pipeline</h3>
@@ -1033,7 +1005,7 @@
               <span class="project-tag">K-Means</span>
               <span class="project-tag">VADER</span>
             </div>
-            <a href="#" class="project-link" onclick="openModal('amazon-modal'); return false;">
+            <a href="main1amazon/project_visualizer.html" target="_blank" class="project-link">
               Explore Project <span>→</span>
             </a>
           </div>
@@ -1182,30 +1154,6 @@
     <p>Designed & Built by Sathyadharini Srinivasan</p>
   </footer>
 
-  <!-- Modals -->
-  <div class="modal" id="quantum-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Quantum-Enhanced Drug Ranking System</h3>
-        <button class="modal-close" onclick="closeModal('quantum-modal')">×</button>
-      </div>
-      <div class="modal-body">
-        <iframe src="hw2/visualizer.html"></iframe>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="amazon-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Amazon Product Analysis Pipeline</h3>
-        <button class="modal-close" onclick="closeModal('amazon-modal')">×</button>
-      </div>
-      <div class="modal-body">
-        <iframe src="main1amazon/project_visualizer.html"></iframe>
-      </div>
-    </div>
-  </div>
 
   <script>
     // Animated background
@@ -1285,34 +1233,6 @@
       mouse.y = e.clientY;
     });
 
-    // Modal functions
-    function openModal(id) {
-      document.getElementById(id).classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        document.querySelectorAll('.modal.active').forEach(modal => {
-          modal.classList.remove('active');
-        });
-        document.body.style.overflow = '';
-      }
-    });
-
-    document.querySelectorAll('.modal').forEach(modal => {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.classList.remove('active');
-          document.body.style.overflow = '';
-        }
-      });
-    });
 
     // Smooth reveal on scroll
     const observerOptions = {
