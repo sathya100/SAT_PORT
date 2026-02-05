@@ -1,0 +1,2685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quantum Enhanced Drug Ranking System</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #111827;
+  --bg-card: #1a2235;
+  --bg-card-hover: #1f2a40;
+  --accent-quantum: #6366f1;
+  --accent-cyan: #22d3ee;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+  --accent-violet: #8b5cf6;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: #1e293b;
+  --glow-quantum: rgba(99,102,241,0.3);
+  --glow-cyan: rgba(34,211,238,0.3);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+/* ===== PARTICLE CANVAS ===== */
+#particles-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ===== NAVIGATION ===== */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(10,14,26,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  transition: all 0.3s ease;
+}
+.nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.4); }
+.nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.nav-logo {
+  font-weight: 800;
+  font-size: 1.1rem;
+  background: linear-gradient(135deg, var(--accent-quantum), var(--accent-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+}
+.nav-links { display: flex; gap: 0.25rem; }
+.nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.nav-links a:hover, .nav-links a.active {
+  color: var(--text-primary);
+  background: rgba(99,102,241,0.1);
+}
+
+/* ===== HERO SECTION ===== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  z-index: 1;
+}
+.hero-content { max-width: 900px; }
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(99,102,241,0.1);
+  border: 1px solid rgba(99,102,241,0.3);
+  padding: 0.4rem 1.2rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--accent-cyan);
+  margin-bottom: 2rem;
+  animation: fadeInUp 0.8s ease;
+}
+.hero-badge .dot {
+  width: 8px; height: 8px;
+  background: var(--accent-emerald);
+  border-radius: 50%;
+  animation: pulse-dot 2s ease infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+.hero h1 {
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  animation: fadeInUp 0.8s ease 0.2s both;
+  letter-spacing: -2px;
+}
+.hero h1 .gradient-text {
+  background: linear-gradient(135deg, var(--accent-quantum), var(--accent-cyan), var(--accent-emerald));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
+}
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin: 0 auto 2.5rem;
+  animation: fadeInUp 0.8s ease 0.4s both;
+  line-height: 1.8;
+}
+.hero-cta {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeInUp 0.8s ease 0.6s both;
+}
+.btn {
+  padding: 0.8rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-quantum), var(--accent-violet));
+  color: white;
+  box-shadow: 0 4px 20px var(--glow-quantum);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--glow-quantum);
+}
+.btn-secondary {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent-quantum);
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-top: 4rem;
+  animation: fadeInUp 0.8s ease 0.8s both;
+}
+.hero-stat {
+  text-align: center;
+}
+.hero-stat .number {
+  font-size: 2.2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-emerald));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-stat .label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 0.25rem;
+}
+
+/* ===== SECTION STYLES ===== */
+section {
+  position: relative;
+  z-index: 1;
+  padding: 6rem 2rem;
+}
+.section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-cyan);
+  margin-bottom: 1rem;
+}
+.section-label::before {
+  content: '';
+  width: 30px;
+  height: 2px;
+  background: var(--accent-cyan);
+}
+.section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  margin-bottom: 1rem;
+}
+.section-desc {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  max-width: 650px;
+  margin-bottom: 3rem;
+}
+
+/* ===== PROBLEM / OBJECTIVE ===== */
+.problem-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+.info-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.5rem;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+.info-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-quantum), var(--accent-cyan));
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.info-card:hover::before { opacity: 1; }
+.info-card:hover {
+  border-color: rgba(99,102,241,0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+.info-card .icon {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.info-card h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.info-card p {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.8;
+}
+
+/* ===== ANIMATED WORKFLOW PIPELINE ===== */
+.pipeline-section {
+  background: linear-gradient(180deg, var(--bg-primary), var(--bg-secondary), var(--bg-primary));
+}
+
+.pipeline-container {
+  position: relative;
+  padding: 3rem 0;
+}
+
+/* Input Stage */
+.pipeline-input {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+.input-node {
+  background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(34,211,238,0.1));
+  border: 1px solid rgba(99,102,241,0.4);
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  min-width: 200px;
+  position: relative;
+  animation: float 4s ease-in-out infinite;
+}
+.input-node:nth-child(2) { animation-delay: 0.5s; }
+.input-node:nth-child(3) { animation-delay: 1s; }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.input-node .input-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+.input-node h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.input-node p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Flow arrows */
+.flow-arrow {
+  text-align: center;
+  margin: 1.5rem 0;
+  font-size: 1.5rem;
+  color: var(--accent-cyan);
+  animation: arrow-pulse 2s ease infinite;
+}
+@keyframes arrow-pulse {
+  0%, 100% { opacity: 0.4; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(5px); }
+}
+
+/* Module Track */
+.track-container {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+.track {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+}
+.track-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.track-header .track-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+.track-header h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.track-header .track-tag {
+  font-size: 0.65rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.track-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.track-step:last-child { border-bottom: none; }
+.track-step:hover { padding-left: 0.5rem; }
+
+.step-number {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  position: relative;
+}
+.step-number::after {
+  content: '';
+  position: absolute;
+  bottom: -100%;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  transform: translateX(-50%);
+}
+.track-step:last-child .step-number::after { display: none; }
+
+.step-content h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.step-content p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Cancer Track Colors */
+.track-cancer { border-color: rgba(99,102,241,0.3); }
+.track-cancer .track-icon { background: rgba(99,102,241,0.15); }
+.track-cancer .track-tag { background: rgba(99,102,241,0.15); color: var(--accent-quantum); }
+.track-cancer .step-number {
+  background: rgba(99,102,241,0.15);
+  color: var(--accent-quantum);
+  border: 1px solid rgba(99,102,241,0.3);
+}
+.track-cancer .step-number::after { background: rgba(99,102,241,0.2); }
+
+/* Disease Track Colors */
+.track-disease { border-color: rgba(16,185,129,0.3); }
+.track-disease .track-icon { background: rgba(16,185,129,0.15); }
+.track-disease .track-tag { background: rgba(16,185,129,0.15); color: var(--accent-emerald); }
+.track-disease .step-number {
+  background: rgba(16,185,129,0.15);
+  color: var(--accent-emerald);
+  border: 1px solid rgba(16,185,129,0.3);
+}
+.track-disease .step-number::after { background: rgba(16,185,129,0.2); }
+
+/* Center merge */
+.merge-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding-top: 6rem;
+}
+.merge-line {
+  width: 2px;
+  height: 60px;
+  background: linear-gradient(180deg, transparent, var(--accent-amber));
+}
+.merge-node {
+  background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(244,63,94,0.1));
+  border: 1px solid rgba(245,158,11,0.4);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  min-width: 180px;
+}
+.merge-node h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--accent-amber);
+  margin-bottom: 0.3rem;
+}
+.merge-node p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Output stage */
+.pipeline-output {
+  margin-top: 3rem;
+  text-align: center;
+}
+.output-node {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(34,211,238,0.1));
+  border: 2px solid rgba(16,185,129,0.4);
+  border-radius: 20px;
+  padding: 1.5rem 3rem;
+  animation: glow-pulse 3s ease infinite;
+}
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(16,185,129,0.1); }
+  50% { box-shadow: 0 0 40px rgba(16,185,129,0.25); }
+}
+.output-node h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.output-node p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ===== MODULE DETAIL CARDS ===== */
+.modules-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.module-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 3rem;
+  transition: all 0.5s ease;
+  opacity: 0;
+  transform: translateY(40px);
+}
+.module-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.module-card:hover {
+  border-color: rgba(99,102,241,0.3);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.module-card:nth-child(even) .module-visual { order: -1; }
+
+.module-info .module-number {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-cyan);
+  margin-bottom: 0.75rem;
+}
+.module-info h3 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  letter-spacing: -0.5px;
+}
+.module-info .module-desc {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+}
+.module-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.module-tag {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: rgba(99,102,241,0.1);
+  color: var(--accent-quantum);
+  border: 1px solid rgba(99,102,241,0.2);
+}
+.module-io {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.io-box {
+  background: rgba(0,0,0,0.2);
+  border-radius: 12px;
+  padding: 1rem;
+}
+.io-box h5 {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 0.5rem;
+}
+.io-box.input-box h5 { color: var(--accent-cyan); }
+.io-box.output-box h5 { color: var(--accent-emerald); }
+.io-box p {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.module-visual {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border);
+}
+.module-visual img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.module-visual:hover img { transform: scale(1.03); }
+.module-visual .img-label {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* ===== TOPSIS SECTION ===== */
+.topsis-section {
+  background: linear-gradient(180deg, var(--bg-primary), var(--bg-secondary));
+}
+.topsis-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+.topsis-step {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.4s ease;
+  position: relative;
+}
+.topsis-step:hover {
+  transform: translateY(-6px);
+  border-color: rgba(139,92,246,0.4);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+.topsis-step .t-num {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-violet), var(--accent-quantum));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin: 0 auto 1rem;
+}
+.topsis-step h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.topsis-step p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ===== DATASETS ===== */
+.datasets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+.dataset-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: all 0.4s ease;
+}
+.dataset-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(34,211,238,0.3);
+}
+.dataset-card .ds-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+.dataset-card h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.dataset-card .ds-count {
+  background: rgba(34,211,238,0.1);
+  color: var(--accent-cyan);
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+.dataset-card .ds-source {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+.ds-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.ds-field {
+  padding: 0.2rem 0.6rem;
+  background: rgba(255,255,255,0.04);
+  border-radius: 6px;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ===== EVALUATION METRICS ===== */
+.eval-section { background: var(--bg-secondary); }
+.eval-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+.eval-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  transition: all 0.4s;
+}
+.eval-card:hover {
+  border-color: rgba(99,102,241,0.3);
+  transform: translateY(-4px);
+}
+.eval-card h4 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.metric-row:last-child { border-bottom: none; }
+.metric-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.metric-value {
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+}
+.metric-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 3px;
+  margin-top: 0.3rem;
+  overflow: hidden;
+}
+.metric-bar .bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1.5s ease;
+  width: 0;
+}
+.eval-card .eval-img {
+  margin-top: 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.eval-card .eval-img img {
+  width: 100%;
+  display: block;
+}
+
+/* ===== ARCHITECTURE IMAGE ===== */
+.arch-section { background: var(--bg-primary); }
+.arch-image-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-top: 2rem;
+  overflow: hidden;
+  position: relative;
+}
+.arch-image-container img {
+  width: 100%;
+  border-radius: 12px;
+  transition: transform 0.5s;
+  cursor: zoom-in;
+}
+.arch-image-container:hover img { transform: scale(1.02); }
+.arch-caption {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ===== UI SHOWCASE ===== */
+.ui-module-block {
+  margin-bottom: 4rem;
+}
+.ui-module-block:last-child { margin-bottom: 0; }
+.ui-module-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.ui-module-header .ui-mod-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.ui-module-header h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+.ui-module-header .ui-mod-tag {
+  font-size: 0.65rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(99,102,241,0.1);
+  color: var(--accent-quantum);
+}
+.ui-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+.ui-grid.single-col {
+  grid-template-columns: 1fr;
+  max-width: 900px;
+}
+.ui-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.4s;
+  cursor: pointer;
+}
+.ui-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+  border-color: rgba(99,102,241,0.3);
+}
+.ui-card.full-width {
+  grid-column: 1 / -1;
+}
+.ui-card img {
+  width: 100%;
+  display: block;
+  transition: transform 0.5s;
+}
+.ui-card:hover img { transform: scale(1.03); }
+.ui-card .ui-label {
+  padding: 1rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-top: 1px solid var(--border);
+}
+.ui-card .ui-sublabel {
+  padding: 0 1.5rem 1rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ===== CONCLUSION ===== */
+.conclusion-section {
+  background: linear-gradient(180deg, var(--bg-secondary), var(--bg-primary));
+}
+.conclusion-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.conclusion-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.4s;
+}
+.conclusion-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(99,102,241,0.3);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+.conclusion-card .c-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.conclusion-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+.conclusion-card p {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ===== IMAGE MODAL ===== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  padding: 2rem;
+}
+.modal-overlay.active { display: flex; }
+.modal-overlay img {
+  max-width: 95%;
+  max-height: 90vh;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.modal-close {
+  position: fixed;
+  top: 1.5rem; right: 2rem;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.7s ease;
+}
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .problem-grid, .track-container, .eval-grid, .ui-grid { grid-template-columns: 1fr; }
+  .module-card { grid-template-columns: 1fr; }
+  .module-card:nth-child(even) .module-visual { order: 0; }
+  .topsis-grid, .conclusion-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 1.5rem; }
+  .merge-column { display: none; }
+  .nav-links a { font-size: 0.7rem; padding: 0.3rem 0.5rem; }
+}
+
+/* ===== QUANTUM CIRCUIT VISUAL ===== */
+.quantum-visual {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 2rem 0;
+  font-family: 'JetBrains Mono', monospace;
+  overflow-x: auto;
+}
+.qubit-line {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 0.5rem 0;
+  position: relative;
+}
+.qubit-label {
+  width: 40px;
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.wire {
+  flex: 1;
+  height: 2px;
+  background: rgba(99,102,241,0.3);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.gate {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s;
+  cursor: default;
+}
+.gate:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 20px var(--glow-quantum);
+}
+.gate-h { background: rgba(99,102,241,0.3); border: 1px solid var(--accent-quantum); color: var(--accent-quantum); }
+.gate-rx { background: rgba(34,211,238,0.2); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); }
+.gate-ry { background: rgba(16,185,129,0.2); border: 1px solid var(--accent-emerald); color: var(--accent-emerald); }
+.gate-rz { background: rgba(245,158,11,0.2); border: 1px solid var(--accent-amber); color: var(--accent-amber); }
+.gate-m { background: rgba(244,63,94,0.2); border: 1px solid var(--accent-rose); color: var(--accent-rose); border-radius: 50%; }
+
+.gate-legend {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+.legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 3px;
+}
+
+/* ===== CRITERIA VISUAL ===== */
+.criteria-visual {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin: 2rem 0;
+}
+.criteria-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.4s;
+}
+.criteria-item:hover {
+  transform: translateY(-6px);
+  border-color: rgba(99,102,241,0.4);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.criteria-item .c-num {
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+}
+.criteria-item h5 {
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+.criteria-item p {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* scroll progress bar */
+.scroll-progress {
+  position: fixed;
+  top: 64px; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-quantum), var(--accent-cyan), var(--accent-emerald));
+  z-index: 101;
+  transition: width 0.1s;
+}
+
+/* ===== DATA FLOW ANIMATION IN TRACK ===== */
+.data-particle {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  position: absolute;
+  animation: data-flow 3s linear infinite;
+}
+@keyframes data-flow {
+  0% { top: 0; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- Scroll Progress -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Particles Background -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- Navigation -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <div class="nav-logo">QEDRS</div>
+    <div class="nav-links">
+      <a href="#hero">Home</a>
+      <a href="#problem">Problem</a>
+      <a href="#at-a-glance">Overview</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#modules">Modules</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#topsis">TOPSIS</a>
+      <a href="#evaluation">Results</a>
+      <a href="#datasets">Data</a>
+      <a href="#ui-showcase">UI</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Image Modal -->
+<div class="modal-overlay" id="imgModal">
+  <button class="modal-close" onclick="closeModal()">&times;</button>
+  <img src="" alt="Expanded view" id="modalImg">
+</div>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Quantum-Classical Hybrid System
+    </div>
+    <h1>
+      <span class="gradient-text">Quantum Enhanced</span><br>
+      Drug Ranking System<br>
+      <span style="font-size:0.55em; color: var(--text-secondary); font-weight:400;">for Comorbid Patients</span>
+    </h1>
+    <p class="hero-subtitle">
+      A personalized cancer-disease drug ranking system integrating molecular profiling,
+      quantum-enhanced binding affinity prediction, ADMET analysis, and comorbidity considerations
+      to optimize treatment selection.
+    </p>
+    <div class="hero-cta">
+      <a href="#pipeline" class="btn btn-primary">Explore Workflow</a>
+      <a href="#modules" class="btn btn-secondary">View Modules</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="number" data-count="5">0</div>
+        <div class="label">Ranking Criteria</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number" data-count="5">0</div>
+        <div class="label">Core Modules</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number" data-count="34">0</div>
+        <div class="label">ADMET Properties</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number" data-count="81">0</div>
+        <div class="label">% Accuracy (QCNN)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PROBLEM & OBJECTIVE ==================== -->
+<section id="problem">
+  <div class="section-inner">
+    <div class="section-label">Understanding the Challenge</div>
+    <h2 class="section-title">Problem & Objective</h2>
+    <div class="problem-grid">
+      <div class="info-card animate-on-scroll">
+        <div class="icon" style="background:rgba(244,63,94,0.1);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <h3>The Problem</h3>
+        <p>
+          Current cancer treatment systems fail to provide personalized drug ranking
+          that considers both the <strong>molecular profile of the cancer</strong> (the specific protein affected)
+          and the patient's <strong>comorbid conditions</strong>. This leads to suboptimal treatment choices,
+          increased risk of adverse drug reactions, and compromised patient outcomes.
+          Oncologists need a comprehensive system that evaluates safety across multiple medications.
+        </p>
+      </div>
+      <div class="info-card animate-on-scroll" style="animation-delay:0.2s;">
+        <div class="icon" style="background:rgba(16,185,129,0.1);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <h3>Our Objective</h3>
+        <p>
+          Develop a personalized cancer-disease drug ranking system that integrates
+          <strong>quantum-enhanced binding affinity prediction</strong>, molecular docking,
+          ADMET profiling, side-effect severity scoring, and drug-drug interaction analysis.
+          The system retrieves FDA-approved therapies for comorbid conditions and selects
+          the safest, most effective treatment pairs using multi-criteria decision analysis (TOPSIS).
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ARCHITECTURE AT-A-GLANCE ==================== -->
+<section id="at-a-glance" style="background: linear-gradient(180deg, var(--bg-secondary), var(--bg-primary));">
+  <div class="section-inner">
+    <div class="section-label">Quick Reference</div>
+    <h2 class="section-title">Architecture At-a-Glance</h2>
+    <p class="section-desc">A comprehensive summary for presenting the system to others.</p>
+
+    <!-- Tech Stack -->
+    <div class="info-card animate-on-scroll" style="margin-bottom: 2rem;">
+      <div class="icon" style="background:rgba(139,92,246,0.1);">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <h3>Tech Stack</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
+          <h5 style="color: var(--accent-cyan); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Frontend</h5>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">HTML5, CSS3, Vanilla JS, Canvas API</p>
+        </div>
+        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
+          <h5 style="color: var(--accent-quantum); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">ML/AI Models</h5>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">XGBoost, Random Forest, Hybrid QCNN</p>
+        </div>
+        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
+          <h5 style="color: var(--accent-violet); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Quantum</h5>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">PennyLane, PyTorch, VQC</p>
+        </div>
+        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
+          <h5 style="color: var(--accent-emerald); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Molecular Tools</h5>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">RDKit, AutoDock Vina, OpenBabel</p>
+        </div>
+        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
+          <h5 style="color: var(--accent-amber); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">External APIs</h5>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">openFDA, PubChem, RCSB PDB</p>
+        </div>
+        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
+          <h5 style="color: var(--accent-rose); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Databases</h5>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">KIBA, SIDER, DrugBank, MedDRA</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input/Output -->
+    <div class="problem-grid" style="margin-bottom: 2rem;">
+      <div class="info-card animate-on-scroll">
+        <div class="icon" style="background:rgba(34,211,238,0.1);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </div>
+        <h3>System Inputs</h3>
+        <div style="margin-top: 1rem;">
+          <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <span style="background: var(--accent-quantum); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700;">1</span>
+            <div>
+              <strong style="color: var(--text-primary); font-size: 0.9rem;">Protein Sequence [P]</strong>
+              <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.2rem;">Target amino acid sequence (cancer protein)</p>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <span style="background: var(--accent-cyan); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700;">2</span>
+            <div>
+              <strong style="color: var(--text-primary); font-size: 0.9rem;">Drug Count (n)</strong>
+              <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.2rem;">Number of cancer drug candidates to evaluate</p>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 0;">
+            <span style="background: var(--accent-emerald); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700;">3</span>
+            <div>
+              <strong style="color: var(--text-primary); font-size: 0.9rem;">Comorbid Disease [D]</strong>
+              <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.2rem;">Patient's co-existing condition (e.g., "diabetes")</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="info-card animate-on-scroll" style="animation-delay:0.2s;">
+        <div class="icon" style="background:rgba(16,185,129,0.1);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <h3>System Output</h3>
+        <div style="margin-top: 1rem; background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(34,211,238,0.05)); border: 1px solid rgba(16,185,129,0.3); border-radius: 12px; padding: 1.5rem; text-align: center;">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent-emerald)" stroke-width="1.5" style="margin-bottom: 0.75rem;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--accent-emerald);">Ranked Drug Pairs</h4>
+          <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6;">
+            Ordered list of <strong>(Cancer Drug + Disease Drug)</strong> combinations<br>
+            optimized for <strong>efficacy</strong> and <strong>safety</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workflow Diagram (ASCII-style) -->
+    <div class="info-card animate-on-scroll" style="margin-bottom: 2rem;">
+      <div class="icon" style="background:rgba(99,102,241,0.1);">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <h3>Workflow Overview</h3>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; background: rgba(0,0,0,0.3); border-radius: 12px; padding: 1.5rem; margin-top: 1rem; overflow-x: auto; line-height: 1.8;">
+        <pre style="color: var(--text-secondary); margin: 0;">
+                         <span style="color: var(--accent-cyan);">USER INPUT</span>
+                              │
+          ┌───────────────────┴───────────────────┐
+          ▼                                       ▼
+┌─────────────────────┐             ┌─────────────────────┐
+│  <span style="color: var(--accent-quantum);">CANCER TRACK</span>        │             │  <span style="color: var(--accent-emerald);">DISEASE TRACK</span>       │
+│  (Molecular)        │             │  (Clinical)         │
+├─────────────────────┤             ├─────────────────────┤
+│ 1. <span style="color: var(--accent-violet);">Quantum QCNN</span>      │             │ 1. FDA Drug         │
+│    Binding Affinity │             │    Retrieval        │
+│                     │             │                     │
+│ 2. AutoDock Vina    │             │ 2. SMILES +         │
+│    Molecular Docking│             │    Side Effects     │
+│                     │             │                     │
+│ 3. XGBoost ADMET    │             │ 3. Severity         │
+│    (34 properties)  │             │    Scoring          │
+│                     │             │                     │
+│ 4. TOPSIS Ranking   │             │ 4. ADMET + TOPSIS   │
+└──────────┬──────────┘             └──────────┬──────────┘
+           │                                   │
+           └─────────────┬─────────────────────┘
+                         ▼
+              ┌──────────────────┐
+              │  <span style="color: var(--accent-amber);">DDI PREDICTION</span>  │
+              │  (Random Forest) │
+              └────────┬─────────┘
+                       ▼
+              ┌──────────────────┐
+              │  <span style="color: var(--accent-emerald);">FINAL TOPSIS</span>    │
+              └────────┬─────────┘
+                       ▼
+              ┌──────────────────┐
+              │  <span style="color: var(--accent-cyan);">RANKED PAIRS</span>    │
+              └──────────────────┘
+        </pre>
+      </div>
+    </div>
+
+    <!-- 5 Core Modules Summary -->
+    <div class="info-card animate-on-scroll" style="margin-bottom: 2rem;">
+      <div class="icon" style="background:rgba(245,158,11,0.1);">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      </div>
+      <h3>5 Core Modules Summary</h3>
+      <div style="margin-top: 1rem; overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+          <thead>
+            <tr style="background: rgba(99,102,241,0.1);">
+              <th style="padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); color: var(--accent-cyan);">Module</th>
+              <th style="padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); color: var(--accent-cyan);">Purpose</th>
+              <th style="padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); color: var(--accent-cyan);">Model</th>
+              <th style="padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); color: var(--accent-cyan);">Output</th>
+            </tr>
+          </thead>
+          <tbody style="color: var(--text-secondary);">
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+              <td style="padding: 0.75rem;"><strong style="color: var(--text-primary);">1. FDA Extraction</strong></td>
+              <td style="padding: 0.75rem;">Get approved drugs for comorbid disease</td>
+              <td style="padding: 0.75rem;"><span style="background: rgba(34,211,238,0.1); color: var(--accent-cyan); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem;">API Calls</span></td>
+              <td style="padding: 0.75rem;">Drug list, SMILES, side effects</td>
+            </tr>
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+              <td style="padding: 0.75rem;"><strong style="color: var(--text-primary);">2. ADMET Profiling</strong></td>
+              <td style="padding: 0.75rem;">Predict drug safety/toxicity (34 properties)</td>
+              <td style="padding: 0.75rem;"><span style="background: rgba(16,185,129,0.1); color: var(--accent-emerald); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem;">XGBoost</span></td>
+              <td style="padding: 0.75rem;">ADMET scores + TOPSIS score</td>
+            </tr>
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+              <td style="padding: 0.75rem;"><strong style="color: var(--text-primary);">3. Molecular Docking</strong></td>
+              <td style="padding: 0.75rem;">Simulate drug-protein binding</td>
+              <td style="padding: 0.75rem;"><span style="background: rgba(245,158,11,0.1); color: var(--accent-amber); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem;">AutoDock Vina</span></td>
+              <td style="padding: 0.75rem;">Active torsion count</td>
+            </tr>
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+              <td style="padding: 0.75rem;"><strong style="color: var(--text-primary);">4. Quantum Binding</strong></td>
+              <td style="padding: 0.75rem;">Predict drug-protein binding strength</td>
+              <td style="padding: 0.75rem;"><span style="background: rgba(139,92,246,0.1); color: var(--accent-violet); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem;">Hybrid QCNN</span></td>
+              <td style="padding: 0.75rem;">Affinity score (81% acc)</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.75rem;"><strong style="color: var(--text-primary);">5. DDI Prediction</strong></td>
+              <td style="padding: 0.75rem;">Check drug-drug interaction risk</td>
+              <td style="padding: 0.75rem;"><span style="background: rgba(244,63,94,0.1); color: var(--accent-rose); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem;">Random Forest</span></td>
+              <td style="padding: 0.75rem;">Safe/Moderate/Unsafe (82% acc)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Simple Explanation Card -->
+    <div class="info-card animate-on-scroll" style="background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(16,185,129,0.05)); border-color: rgba(99,102,241,0.3);">
+      <div class="icon" style="background:rgba(99,102,241,0.15);">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <h3>Simple Explanation (For Non-Technical Audience)</h3>
+      <div style="margin-top: 1rem; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 1.5rem; border-left: 4px solid var(--accent-quantum);">
+        <p style="color: var(--text-primary); font-size: 0.95rem; line-height: 1.8; font-style: italic;">
+          "Given a <strong style="color: var(--accent-quantum);">cancer patient</strong> who also has <strong style="color: var(--accent-emerald);">diabetes</strong>, this system:
+        </p>
+        <ol style="color: var(--text-secondary); font-size: 0.9rem; line-height: 2; margin-top: 1rem; padding-left: 1.5rem;">
+          <li>Takes the <strong>cancer protein target</strong></li>
+          <li>Finds the best <strong>cancer drugs</strong> using quantum-enhanced AI</li>
+          <li>Finds <strong>FDA-approved diabetes drugs</strong></li>
+          <li>Checks if each <strong>cancer-diabetes drug pair is safe</strong> together</li>
+          <li>Ranks all combinations and <strong>recommends the safest, most effective pairs</strong>"</li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== 5 RANKING CRITERIA ==================== -->
+<section style="background: var(--bg-secondary);">
+  <div class="section-inner">
+    <div class="section-label">Decision Framework</div>
+    <h2 class="section-title">5 Ranking Criteria</h2>
+    <p class="section-desc">Each drug pair is evaluated across five complementary dimensions to ensure both efficacy and safety.</p>
+    <div class="criteria-visual">
+      <div class="criteria-item animate-on-scroll">
+        <div class="c-num" style="color:var(--accent-quantum);">01</div>
+        <h5>Binding Affinity</h5>
+        <p>Quantum-enhanced prediction of drug-protein interaction strength</p>
+      </div>
+      <div class="criteria-item animate-on-scroll" style="transition-delay:0.1s">
+        <div class="c-num" style="color:var(--accent-cyan);">02</div>
+        <h5>Active Torsions</h5>
+        <p>Structural compatibility via automated molecular docking</p>
+      </div>
+      <div class="criteria-item animate-on-scroll" style="transition-delay:0.2s">
+        <div class="c-num" style="color:var(--accent-emerald);">03</div>
+        <h5>ADMET Properties</h5>
+        <p>34 pharmacokinetic & toxicity profiles predicted by XGBoost</p>
+      </div>
+      <div class="criteria-item animate-on-scroll" style="transition-delay:0.3s">
+        <div class="c-num" style="color:var(--accent-amber);">04</div>
+        <h5>Side Effect Severity</h5>
+        <p>Weighted severity index from FDA-reported adverse events</p>
+      </div>
+      <div class="criteria-item animate-on-scroll" style="transition-delay:0.4s">
+        <div class="c-num" style="color:var(--accent-rose);">05</div>
+        <h5>Drug-Drug Interaction</h5>
+        <p>Interaction risk between cancer & comorbid drugs</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== WORKFLOW PIPELINE ==================== -->
+<section class="pipeline-section" id="pipeline">
+  <div class="section-inner">
+    <div class="section-label">System Workflow</div>
+    <h2 class="section-title">End-to-End Pipeline</h2>
+    <p class="section-desc">From patient input to ranked drug pair recommendations - two parallel tracks converge through TOPSIS.</p>
+
+    <div class="pipeline-container">
+      <!-- Input Nodes -->
+      <div class="pipeline-input">
+        <div class="input-node animate-on-scroll">
+          <div class="input-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent-quantum)" stroke-width="1.5"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="9" r="1" fill="var(--accent-quantum)"/><circle cx="15" cy="9" r="1" fill="var(--accent-quantum)"/></svg>
+          </div>
+          <h4>Protein Sequence</h4>
+          <p>Target amino acid sequence [P]</p>
+        </div>
+        <div class="input-node animate-on-scroll">
+          <div class="input-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4m-10-10h4m12 0h4M5.64 5.64l2.83 2.83m7.07 7.07l2.83 2.83M5.64 18.36l2.83-2.83m7.07-7.07l2.83-2.83"/></svg>
+          </div>
+          <h4>Cancer Drug Count (n)</h4>
+          <p>Number of candidates to evaluate</p>
+        </div>
+        <div class="input-node animate-on-scroll">
+          <div class="input-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent-emerald)" stroke-width="1.5"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          </div>
+          <h4>Comorbid Disease</h4>
+          <p>Patient's co-existing condition [D]</p>
+        </div>
+      </div>
+
+      <div class="flow-arrow">&darr;&darr;&darr;</div>
+
+      <!-- Two Parallel Tracks + Merge -->
+      <div class="track-container">
+        <!-- Cancer Drug Track -->
+        <div class="track track-cancer animate-on-scroll">
+          <div class="track-header">
+            <div class="track-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-quantum)" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4m-10-10h4m12 0h4"/></svg>
+            </div>
+            <h3>Cancer-Drug Track</h3>
+            <span class="track-tag">MOLECULAR</span>
+          </div>
+          <div class="track-step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h4>Quantum Binding Affinity</h4>
+              <p>Hybrid QCNN evaluates all KIBA compounds; selects top n strongest binders.</p>
+            </div>
+          </div>
+          <div class="track-step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h4>Molecular Docking</h4>
+              <p>AutoDock Vina docks each ligand. Counts active torsional sites (fewer = better fit).</p>
+            </div>
+          </div>
+          <div class="track-step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h4>ADMET Profiling</h4>
+              <p>XGBoost predicts 34 pharmacokinetic & safety profiles. Ranked via TOPSIS.</p>
+            </div>
+          </div>
+          <div class="track-step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h4>Composite TOPSIS</h4>
+              <p>Integrates affinity, torsions, and ADMET into a unified cancer-drug score.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Center Merge -->
+        <div class="merge-column">
+          <div class="merge-line"></div>
+          <div class="merge-node animate-on-scroll">
+            <h4>Drug-Drug Interaction</h4>
+            <p>Random Forest predicts DDI risk for all cancer-disease drug pairs</p>
+          </div>
+          <div class="merge-line"></div>
+          <div class="merge-node animate-on-scroll" style="border-color: rgba(16,185,129,0.5);">
+            <h4 style="color:var(--accent-emerald);">Final TOPSIS</h4>
+            <p>Merges DDI score + cancer score + disease score</p>
+          </div>
+          <div class="merge-line"></div>
+        </div>
+
+        <!-- Disease Drug Track -->
+        <div class="track track-disease animate-on-scroll">
+          <div class="track-header">
+            <div class="track-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-emerald)" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            </div>
+            <h3>Comorbid-Disease Track</h3>
+            <span class="track-tag">CLINICAL</span>
+          </div>
+          <div class="track-step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h4>FDA Drug Retrieval</h4>
+              <p>Fetch FDA-approved drugs for the specified comorbid disease via openFDA API.</p>
+            </div>
+          </div>
+          <div class="track-step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h4>SMILES & Side Effects</h4>
+              <p>Retrieve molecular structures from PubChem. Map side effects from SIDER.</p>
+            </div>
+          </div>
+          <div class="track-step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h4>Severity Scoring</h4>
+              <p>Average severity x frequency across all reported side effects. Ranked lowest to highest.</p>
+            </div>
+          </div>
+          <div class="track-step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h4>ADMET + Composite TOPSIS</h4>
+              <p>Same XGBoost pipeline for ADMET. Merged with severity index via TOPSIS.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-arrow" style="margin-top:2rem;">&darr;&darr;&darr;</div>
+
+      <!-- Output -->
+      <div class="pipeline-output">
+        <div class="output-node animate-on-scroll">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent-emerald)" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <div>
+            <h4>Ranked Drug Pairs</h4>
+            <p>Top treatment pairs optimized for efficacy & safety</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ARCHITECTURE DIAGRAMS ==================== -->
+<section class="arch-section" id="architecture">
+  <div class="section-inner">
+    <div class="section-label">System Design</div>
+    <h2 class="section-title">Architecture Overview</h2>
+    <p class="section-desc">Complete system architecture showing data flow from input through all modules to final ranking.</p>
+
+    <div class="arch-image-container animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+      <img src="extracted_images/slide9_img0.png" alt="Architecture Diagram">
+      <div class="arch-caption">Full Architecture Diagram &mdash; Click to expand</div>
+    </div>
+
+    <div style="margin-top: 2rem;"></div>
+
+    <div class="arch-image-container animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+      <img src="extracted_images/slide10_img1.png" alt="Ranking Flow Diagram">
+      <div class="arch-caption">Ranking Flow Diagram &mdash; Two tracks converge through TOPSIS &mdash; Click to expand</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== MODULE DETAILS ==================== -->
+<section id="modules" style="background: var(--bg-secondary);">
+  <div class="section-inner">
+    <div class="section-label">Deep Dive</div>
+    <h2 class="section-title">Core Modules</h2>
+    <p class="section-desc">Five integrated modules working together to produce comprehensive drug pair rankings.</p>
+
+    <div class="modules-grid">
+
+      <!-- Module 1: FDA Drugs & Side Effects -->
+      <div class="module-card">
+        <div class="module-info">
+          <div class="module-number">Module 01</div>
+          <h3>FDA Drug & Side-Effect Extraction</h3>
+          <p class="module-desc">
+            Fetches FDA-approved drugs for any input comorbid disease, retrieves SMILES molecular structures
+            from PubChem, and maps side effects using the SIDER database. Side effects are grouped by
+            similarity and scored using a severity index (severity x frequency).
+          </p>
+          <div class="module-tags">
+            <span class="module-tag">openFDA API</span>
+            <span class="module-tag">PubChem</span>
+            <span class="module-tag">SIDER</span>
+            <span class="module-tag">MedDRA</span>
+          </div>
+          <div class="module-io">
+            <div class="io-box input-box">
+              <h5>Input</h5>
+              <p>Disease name</p>
+            </div>
+            <div class="io-box output-box">
+              <h5>Output</h5>
+              <p>Drug list, SMILES, side effects & severity index</p>
+            </div>
+          </div>
+        </div>
+        <div class="module-visual" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide18_img4.png" alt="FDA Module Design">
+          <div class="img-label">Detailed design flow diagram</div>
+        </div>
+      </div>
+
+      <!-- Module 2: ADMET XGBoost -->
+      <div class="module-card">
+        <div class="module-info">
+          <div class="module-number">Module 02</div>
+          <h3>ADMET Profiling (XGBoost)</h3>
+          <p class="module-desc">
+            Predicts 34 ADMET properties (Absorption, Distribution, Metabolism, Excretion, Toxicity) using
+            an XGBoost model trained on KIBA dataset SMILES. Features are extracted via RDKit molecular
+            descriptors (MolWt, LogP, TPSA, H-bond donors/acceptors, etc.) and normalized using StandardScaler.
+          </p>
+          <div class="module-tags">
+            <span class="module-tag">XGBoost</span>
+            <span class="module-tag">RDKit</span>
+            <span class="module-tag">34 Properties</span>
+            <span class="module-tag" style="background:rgba(16,185,129,0.1);color:var(--accent-emerald);">Lipinski's Rule</span>
+          </div>
+          <div class="module-io">
+            <div class="io-box input-box">
+              <h5>Input</h5>
+              <p>Drug SMILES representation</p>
+            </div>
+            <div class="io-box output-box">
+              <h5>Output</h5>
+              <p>34 ADMET properties + TOPSIS closeness score</p>
+            </div>
+          </div>
+        </div>
+        <div class="module-visual" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide22_img6.png" alt="ADMET Module Design">
+          <div class="img-label">ADMET XGBoost pipeline</div>
+        </div>
+      </div>
+
+      <!-- Module 3: Docking -->
+      <div class="module-card">
+        <div class="module-info">
+          <div class="module-number">Module 03</div>
+          <h3>Automated Molecular Docking</h3>
+          <p class="module-desc">
+            Simulates drug-protein interactions using AutoDock Vina. Converts SMILES and protein sequences
+            to PDBQT format via OpenBabel & RDKit. Automatically computes binding site bounding boxes,
+            executes docking, and counts active torsional sites. Fewer torsions indicate better structural compatibility.
+          </p>
+          <div class="module-tags">
+            <span class="module-tag">AutoDock Vina</span>
+            <span class="module-tag">OpenBabel</span>
+            <span class="module-tag">RDKit</span>
+            <span class="module-tag">RCSB PDB</span>
+          </div>
+          <div class="module-io">
+            <div class="io-box input-box">
+              <h5>Input</h5>
+              <p>Drug SMILES + protein sequence</p>
+            </div>
+            <div class="io-box output-box">
+              <h5>Output</h5>
+              <p>Active torsion count, binding affinity per cavity</p>
+            </div>
+          </div>
+        </div>
+        <div class="module-visual" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide27_img11.png" alt="Docking Module Design">
+          <div class="img-label">Docking automation workflow</div>
+        </div>
+      </div>
+
+      <!-- Module 4: Quantum Binding Affinity -->
+      <div class="module-card">
+        <div class="module-info">
+          <div class="module-number">Module 04</div>
+          <h3>Quantum-Enhanced Binding Affinity</h3>
+          <p class="module-desc">
+            A hybrid quantum-classical neural network (QCNN) for predicting drug-protein binding affinity.
+            Uses character tokenization, 128-dim embeddings, Conv1D layers, and replaces classical
+            attention with a quantum circuit: <strong>Amplitude Encoding</strong> converts data to quantum states,
+            <strong>Hadamard gates</strong> create superposition, and <strong>RX/RY/RZ variational gates</strong>
+            perform learnable rotations analogous to trainable weights.
+          </p>
+          <div class="module-tags">
+            <span class="module-tag" style="background:rgba(139,92,246,0.15);color:var(--accent-violet);">PennyLane</span>
+            <span class="module-tag" style="background:rgba(139,92,246,0.15);color:var(--accent-violet);">PyTorch</span>
+            <span class="module-tag">VQC</span>
+            <span class="module-tag">Hybrid QCNN</span>
+          </div>
+          <div class="module-io">
+            <div class="io-box input-box">
+              <h5>Input</h5>
+              <p>Drug SMILES + protein sequence</p>
+            </div>
+            <div class="io-box output-box">
+              <h5>Output</h5>
+              <p>Predicted binding affinity score (81.25% accuracy)</p>
+            </div>
+          </div>
+        </div>
+        <div class="module-visual" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide36_img20.png" alt="Quantum vs Classical architecture">
+          <div class="img-label">Classical CNN vs Quantum Neural Network architecture</div>
+        </div>
+      </div>
+
+      <!-- Module 5: DDI -->
+      <div class="module-card">
+        <div class="module-info">
+          <div class="module-number">Module 05</div>
+          <h3>Drug-Drug Interaction Prediction</h3>
+          <p class="module-desc">
+            A Random Forest classifier that predicts interactions between cancer drugs and comorbid disease drugs.
+            Extracts physicochemical features (MolWt, LogP, TPSA, etc.) from both drug SMILES using RDKit,
+            computes Tanimoto similarity between molecular fingerprints, and classifies interactions as
+            Safe (0), Moderate (1), or Unsafe (2) using the DrugBank dataset (191,809 pairs).
+          </p>
+          <div class="module-tags">
+            <span class="module-tag">Random Forest</span>
+            <span class="module-tag">DrugBank</span>
+            <span class="module-tag" style="background:rgba(245,158,11,0.1);color:var(--accent-amber);">Tanimoto</span>
+            <span class="module-tag" style="background:rgba(244,63,94,0.1);color:var(--accent-rose);">82% Accuracy</span>
+          </div>
+          <div class="module-io">
+            <div class="io-box input-box">
+              <h5>Input</h5>
+              <p>SMILES of Drug 1 & Drug 2</p>
+            </div>
+            <div class="io-box output-box">
+              <h5>Output</h5>
+              <p>Interaction class (Safe / Moderate / Unsafe)</p>
+            </div>
+          </div>
+        </div>
+        <div class="module-visual" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide39_img23.png" alt="DDI Module Design">
+          <div class="img-label">Drug-Drug Interaction prediction flow</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ==================== QUANTUM CIRCUIT VISUAL ==================== -->
+<section style="background: var(--bg-primary);">
+  <div class="section-inner">
+    <div class="section-label">Quantum Computing</div>
+    <h2 class="section-title">Inside the Quantum Circuit</h2>
+    <p class="section-desc">
+      The hybrid QCNN replaces classical multi-head attention with a Variational Quantum Circuit (VQC),
+      enabling exploration of exponentially large feature spaces through quantum superposition.
+    </p>
+    <div class="quantum-visual animate-on-scroll">
+      <div class="qubit-line">
+        <span class="qubit-label">q[0]</span>
+        <div class="wire">
+          <div class="gate gate-h">H</div>
+          <div class="gate gate-rx">RX</div>
+          <div class="gate gate-ry">RY</div>
+          <div class="gate gate-rz">RZ</div>
+          <div class="gate gate-m">M</div>
+        </div>
+      </div>
+      <div class="qubit-line">
+        <span class="qubit-label">q[1]</span>
+        <div class="wire">
+          <div class="gate gate-h">H</div>
+          <div class="gate gate-rx">RX</div>
+          <div class="gate gate-ry">RY</div>
+          <div class="gate gate-rz">RZ</div>
+          <div class="gate gate-m">M</div>
+        </div>
+      </div>
+      <div class="qubit-line">
+        <span class="qubit-label">q[2]</span>
+        <div class="wire">
+          <div class="gate gate-h">H</div>
+          <div class="gate gate-rx">RX</div>
+          <div class="gate gate-ry">RY</div>
+          <div class="gate gate-rz">RZ</div>
+          <div class="gate gate-m">M</div>
+        </div>
+      </div>
+      <div class="qubit-line">
+        <span class="qubit-label">q[3]</span>
+        <div class="wire">
+          <div class="gate gate-h">H</div>
+          <div class="gate gate-rx">RX</div>
+          <div class="gate gate-ry">RY</div>
+          <div class="gate gate-rz">RZ</div>
+          <div class="gate gate-m">M</div>
+        </div>
+      </div>
+      <div class="gate-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--accent-quantum)"></div> Hadamard (superposition)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--accent-cyan)"></div> RX (X rotation)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--accent-emerald)"></div> RY (Y rotation)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--accent-amber)"></div> RZ (Z rotation)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--accent-rose); border-radius:50%"></div> Measurement</div>
+      </div>
+    </div>
+    <div class="problem-grid" style="margin-top:2rem;">
+      <div class="info-card animate-on-scroll">
+        <h3>Why Quantum?</h3>
+        <p>
+          <strong>Amplitude Encoding</strong> converts classical feature vectors into quantum states,
+          compressing information into qubit amplitudes. <strong>Hadamard gates</strong> map to exponentially
+          large feature spaces, eliminating the need for multi-head attention.
+          <strong>Variational gates (RX, RY, RZ)</strong> act as learnable parameters analogous to
+          neural network weights, trained through backpropagation via PennyLane.
+        </p>
+      </div>
+      <div class="info-card animate-on-scroll">
+        <h3>Architecture Comparison</h3>
+        <p>
+          The classical CNN uses Conv1D layers + Multi-Head Attention + Fully Connected layers (256-dim).
+          The quantum model replaces attention with 3 VQCs (4 qubits each), concatenated to 12-dim,
+          then projected through fully connected layers. This achieves <strong>81.25% accuracy</strong> with
+          <strong>37ms inference time</strong> and Pearson correlation of 0.73.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== TOPSIS ==================== -->
+<section class="topsis-section" id="topsis">
+  <div class="section-inner">
+    <div class="section-label">Ranking Algorithm</div>
+    <h2 class="section-title">TOPSIS Workflow</h2>
+    <p class="section-desc">Technique for Order Preference by Similarity to Ideal Solution &mdash; ranks alternatives based on closeness to the best possible outcome.</p>
+
+    <div class="topsis-grid">
+      <div class="topsis-step animate-on-scroll">
+        <div class="t-num">1</div>
+        <h4>Decision Matrix</h4>
+        <p>Construct matrix: Alternatives (drugs) x Criteria (affinity, torsions, ADMET, severity, DDI)</p>
+      </div>
+      <div class="topsis-step animate-on-scroll" style="transition-delay:0.1s">
+        <div class="t-num">2</div>
+        <h4>Normalize</h4>
+        <p>Apply Euclidean normalization to each column for comparable scales</p>
+      </div>
+      <div class="topsis-step animate-on-scroll" style="transition-delay:0.2s">
+        <div class="t-num">3</div>
+        <h4>Weight Criteria</h4>
+        <p>Multiply normalized values by criterion-specific weights</p>
+      </div>
+      <div class="topsis-step animate-on-scroll" style="transition-delay:0.3s">
+        <div class="t-num">4</div>
+        <h4>Ideal Solutions</h4>
+        <p>Identify PIS (best value) and NIS (worst value) for each criterion</p>
+      </div>
+      <div class="topsis-step animate-on-scroll" style="transition-delay:0.4s">
+        <div class="t-num">5</div>
+        <h4>Calculate Distances</h4>
+        <p>Compute Euclidean distance of each alternative from PIS and NIS</p>
+      </div>
+      <div class="topsis-step animate-on-scroll" style="transition-delay:0.5s">
+        <div class="t-num">6</div>
+        <h4>Closeness Coefficient</h4>
+        <p>CC = S- / (S+ + S-). Higher CC = closer to ideal. Rank by descending CC.</p>
+      </div>
+    </div>
+
+    <div class="arch-image-container animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+      <img src="extracted_images/slide13_img3.png" alt="TOPSIS Formula">
+      <div class="arch-caption">TOPSIS Closeness Coefficient Formula &mdash; Click to expand</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== DATASETS ==================== -->
+<section id="datasets">
+  <div class="section-inner">
+    <div class="section-label">Data Sources</div>
+    <h2 class="section-title">Datasets</h2>
+    <p class="section-desc">Four curated datasets powering the system, from trusted biomedical sources.</p>
+    <div class="datasets-grid">
+      <div class="dataset-card animate-on-scroll">
+        <div class="ds-header">
+          <h4>KIBA</h4>
+          <span class="ds-count">118,254 pairs</span>
+        </div>
+        <div class="ds-source">Kinase Inhibitor BioActivity</div>
+        <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:1rem;">2,111 drugs &middot; 229 proteins. Binding affinity from Ki, Kd, IC50.</p>
+        <div class="ds-fields">
+          <span class="ds-field">CHEMBLID</span>
+          <span class="ds-field">ProteinID</span>
+          <span class="ds-field">SMILES</span>
+          <span class="ds-field">Target_seq</span>
+          <span class="ds-field">KIBA_Score</span>
+        </div>
+      </div>
+      <div class="dataset-card animate-on-scroll" style="transition-delay:0.1s">
+        <div class="ds-header">
+          <h4>SIDER</h4>
+          <span class="ds-count">1,430 drugs</span>
+        </div>
+        <div class="ds-source">EMBL (European Molecular Biology Lab)</div>
+        <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:1rem;">5,868 side effects. Maps drug IDs to adverse effects via MedDRA terms.</p>
+        <div class="ds-fields">
+          <span class="ds-field">UMLS_id</span>
+          <span class="ds-field">Gname</span>
+          <span class="ds-field">Se</span>
+          <span class="ds-field">Pref_low</span>
+          <span class="ds-field">MedDRA</span>
+        </div>
+      </div>
+      <div class="dataset-card animate-on-scroll" style="transition-delay:0.2s">
+        <div class="ds-header">
+          <h4>DrugBank DDI</h4>
+          <span class="ds-count">191,809 pairs</span>
+        </div>
+        <div class="ds-source">DrugBank - Pharmaceutical Research</div>
+        <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:1rem;">Drug interaction data with 3-class scoring: Safe (0), Permissible (1), Unsafe (2).</p>
+        <div class="ds-fields">
+          <span class="ds-field">Drug_1</span>
+          <span class="ds-field">Drug_2</span>
+          <span class="ds-field">Map</span>
+          <span class="ds-field">Y_score</span>
+        </div>
+      </div>
+      <div class="dataset-card animate-on-scroll" style="transition-delay:0.3s">
+        <div class="ds-header">
+          <h4>Severity (MedDRA)</h4>
+          <span class="ds-count">2,930 effects</span>
+        </div>
+        <div class="ds-source">MedDRA - International Medical DB</div>
+        <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:1rem;">Side effect severity scores and occurrence frequency percentages.</p>
+        <div class="ds-fields">
+          <span class="ds-field">Name</span>
+          <span class="ds-field">Rank_Score</span>
+          <span class="ds-field">Frequency</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== EVALUATION ==================== -->
+<section class="eval-section" id="evaluation">
+  <div class="section-inner">
+    <div class="section-label">Performance</div>
+    <h2 class="section-title">Evaluation Results</h2>
+    <p class="section-desc">Model accuracy and performance metrics across the two ML components.</p>
+    <div class="eval-grid">
+      <div class="eval-card animate-on-scroll">
+        <h4>Quantum Neural Network (QCNN)</h4>
+        <div class="metric-row">
+          <span class="metric-label">Accuracy</span>
+          <span class="metric-value" style="color:var(--accent-emerald);">81.25%</span>
+        </div>
+        <div class="metric-bar"><div class="bar-fill" data-width="81.25" style="background:linear-gradient(90deg,var(--accent-quantum),var(--accent-cyan));"></div></div>
+        <div class="metric-row">
+          <span class="metric-label">MSE</span>
+          <span class="metric-value">0.3208</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">RMSE</span>
+          <span class="metric-value">0.5664</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Pearson Correlation</span>
+          <span class="metric-value" style="color:var(--accent-cyan);">0.7341</span>
+        </div>
+        <div class="metric-bar"><div class="bar-fill" data-width="73.41" style="background:linear-gradient(90deg,var(--accent-cyan),var(--accent-emerald));"></div></div>
+        <div class="metric-row">
+          <span class="metric-label">R&sup2; Score</span>
+          <span class="metric-value">0.5380</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Avg Inference Time</span>
+          <span class="metric-value" style="color:var(--accent-amber);">37.19 ms</span>
+        </div>
+        <div class="eval-img" onclick="openModal(this.querySelector('img').src)" style="cursor:pointer;">
+          <img src="extracted_images/slide38_img21.jpg" alt="QCNN Training">
+        </div>
+      </div>
+      <div class="eval-card animate-on-scroll" style="transition-delay:0.15s">
+        <h4>DDI Random Forest Classifier</h4>
+        <div class="metric-row">
+          <span class="metric-label">Accuracy</span>
+          <span class="metric-value" style="color:var(--accent-emerald);">82.16%</span>
+        </div>
+        <div class="metric-bar"><div class="bar-fill" data-width="82.16" style="background:linear-gradient(90deg,var(--accent-emerald),var(--accent-cyan));"></div></div>
+        <div class="metric-row">
+          <span class="metric-label">Model</span>
+          <span class="metric-value" style="font-size:0.85rem;">Random Forest</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Classes</span>
+          <span class="metric-value" style="font-size:0.85rem;">25 interaction types</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Training Pairs</span>
+          <span class="metric-value">191,809</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Features</span>
+          <span class="metric-value" style="font-size:0.85rem;">MolWt, LogP, TPSA, +7</span>
+        </div>
+        <div class="eval-img" onclick="openModal(this.querySelector('img').src)" style="cursor:pointer;">
+          <img src="extracted_images/slide43_img26.png" alt="DDI Classification Report">
+        </div>
+      </div>
+      <div class="eval-card animate-on-scroll" style="transition-delay:0.25s">
+        <h4>ADMET XGBoost Model</h4>
+        <div class="metric-row">
+          <span class="metric-label">Properties Predicted</span>
+          <span class="metric-value" style="color:var(--accent-cyan);">34</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Features Extracted</span>
+          <span class="metric-value">16 descriptors</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Top MAE (HIA_Hou)</span>
+          <span class="metric-value" style="color:var(--accent-emerald);">0.016</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Normalization</span>
+          <span class="metric-value" style="font-size:0.85rem;">StandardScaler</span>
+        </div>
+        <div class="eval-img" onclick="openModal(this.querySelector('img').src)" style="cursor:pointer;">
+          <img src="extracted_images/slide25_img9.png" alt="ADMET MAE Results">
+        </div>
+      </div>
+      <div class="eval-card animate-on-scroll" style="transition-delay:0.35s">
+        <h4>ADMET MAE Per Property</h4>
+        <div class="metric-row">
+          <span class="metric-label">BBB_Martins</span>
+          <span class="metric-value" style="color:var(--accent-emerald);">0.095</span>
+        </div>
+        <div class="metric-bar"><div class="bar-fill" data-width="9.5" style="background:var(--accent-emerald);"></div></div>
+        <div class="metric-row">
+          <span class="metric-label">Pgp_Broccatelli</span>
+          <span class="metric-value">0.093</span>
+        </div>
+        <div class="metric-bar"><div class="bar-fill" data-width="9.3" style="background:var(--accent-cyan);"></div></div>
+        <div class="metric-row">
+          <span class="metric-label">AMES (Mutagenicity)</span>
+          <span class="metric-value">0.123</span>
+        </div>
+        <div class="metric-bar"><div class="bar-fill" data-width="12.3" style="background:var(--accent-amber);"></div></div>
+        <div class="metric-row">
+          <span class="metric-label">ClinTox</span>
+          <span class="metric-value" style="color:var(--accent-emerald);">0.095</span>
+        </div>
+        <div class="metric-bar"><div class="bar-fill" data-width="9.5" style="background:var(--accent-violet);"></div></div>
+        <div class="metric-row">
+          <span class="metric-label">DILI</span>
+          <span class="metric-value">0.046</span>
+        </div>
+        <div class="metric-bar"><div class="bar-fill" data-width="4.6" style="background:var(--accent-rose);"></div></div>
+        <div class="eval-img" onclick="openModal(this.querySelector('img').src)" style="cursor:pointer;">
+          <img src="extracted_images/slide25_img10.png" alt="ADMET Evaluation Charts">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== UI SHOWCASE ==================== -->
+<section id="ui-showcase" style="background: var(--bg-primary);">
+  <div class="section-inner">
+    <div class="section-label">Application</div>
+    <h2 class="section-title">System UI & Results</h2>
+    <p class="section-desc">Complete walkthrough of every module's interface, sample inputs/outputs, and evaluation results -- in order.</p>
+
+    <!-- ===== 1. DRUG RANKING UI ===== -->
+    <div class="ui-module-block">
+      <div class="ui-module-header animate-on-scroll">
+        <div class="ui-mod-icon" style="background:rgba(16,185,129,0.15);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-emerald)" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <h3>Drug Ranking Dashboard</h3>
+        <span class="ui-mod-tag" style="background:rgba(16,185,129,0.1);color:var(--accent-emerald);">Final Output</span>
+      </div>
+      <div class="ui-grid">
+        <div class="ui-card full-width animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide48_img30.png" alt="Ranking UI - Input & System Details">
+          <div class="ui-label">Ranking System Details & Input</div>
+          <div class="ui-sublabel">Enter protein sequence, number of candidates, and comorbid disease name</div>
+        </div>
+        <div class="ui-card full-width animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide48_img31.png" alt="Ranking UI - Top 3 Pairs & 3D">
+          <div class="ui-label">Top 3 Compatible Drug Pairs & 3D Molecular Structures</div>
+          <div class="ui-sublabel">3D visualizations of cancer and disease drugs with intermediate ranking steps</div>
+        </div>
+        <div class="ui-card full-width animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide49_img32.png" alt="Ranking UI - Intermediate Rankings">
+          <div class="ui-label">Intermediate Ranking Steps</div>
+          <div class="ui-sublabel">Cancer drug rankings (affinity, torsions, ADMET, combined) and disease drug rankings (side effects, ADMET, combined)</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide49_img33.png" alt="Ranking UI - Bar Charts">
+          <div class="ui-label">Cancer & FDA Drug Ranks by Criterion</div>
+          <div class="ui-sublabel">Bar charts comparing drugs across each scoring dimension</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide49_img34.png" alt="Ranking UI - DDI & Final">
+          <div class="ui-label">DDI Predictions & Final Combined Ranking</div>
+          <div class="ui-sublabel">Drug-drug interaction groups and the final ranked drug pair table</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 2. QUANTUM BINDING AFFINITY UI ===== -->
+    <div class="ui-module-block">
+      <div class="ui-module-header animate-on-scroll">
+        <div class="ui-mod-icon" style="background:rgba(139,92,246,0.15);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-violet)" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4m-10-10h4m12 0h4M5.64 5.64l2.83 2.83m7.07 7.07l2.83 2.83"/></svg>
+        </div>
+        <h3>Quantum Binding Affinity Predictor</h3>
+        <span class="ui-mod-tag" style="background:rgba(139,92,246,0.1);color:var(--accent-violet);">Module 04</span>
+      </div>
+      <div class="ui-grid">
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide50_img35.png" alt="Quantum - Model Details & Training Data">
+          <div class="ui-label">Model Details & Training Dataset</div>
+          <div class="ui-sublabel">KIBA dataset with drug SMILES and protein sequences</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide50_img36.png" alt="Quantum - CNN vs QCNN Comparison">
+          <div class="ui-label">CNN vs Quantum CNN Comparison</div>
+          <div class="ui-sublabel">Side-by-side model architecture steps and training metrics</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide52_img42.png" alt="Quantum - Prediction Input">
+          <div class="ui-label">Model Prediction Input</div>
+          <div class="ui-sublabel">Enter drug SMILES and protein sequence to predict binding affinity</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide51_img38.png" alt="Quantum - Prediction Output">
+          <div class="ui-label">Prediction Output &mdash; Binding Affinity Scores</div>
+          <div class="ui-sublabel">KIBA score predictions for each drug-protein pair</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide51_img39.png" alt="Quantum - Internal Layers">
+          <div class="ui-label">Quantum Circuit Layers & Weights</div>
+          <div class="ui-sublabel">Variational quantum circuit parameters and internal layer visualization</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide51_img40.png" alt="Quantum - Architecture & Performance Chart">
+          <div class="ui-label">Architecture Diagram & Performance Comparison</div>
+          <div class="ui-sublabel">Classical CNN vs Quantum CNN with bar chart comparing metrics</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide52_img41.png" alt="Quantum - Model Evaluation & Training Logs">
+          <div class="ui-label">Model Evaluation & Training Logs</div>
+          <div class="ui-sublabel">MSE: 0.3208, RMSE: 0.5664, Pearson: 0.7341, Accuracy: 81.25%</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide38_img21.jpg" alt="Quantum - Epoch Training">
+          <div class="ui-label">Epoch-by-Epoch Training Progress</div>
+          <div class="ui-sublabel">70 epochs, loss convergence from 0.68 to 0.20</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 3. ADMET UI ===== -->
+    <div class="ui-module-block">
+      <div class="ui-module-header animate-on-scroll">
+        <div class="ui-mod-icon" style="background:rgba(34,211,238,0.15);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+        </div>
+        <h3>ADMET Property Predictor</h3>
+        <span class="ui-mod-tag" style="background:rgba(34,211,238,0.1);color:var(--accent-cyan);">Module 02</span>
+      </div>
+      <div class="ui-grid">
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide53_img44.png" alt="ADMET - Home Page">
+          <div class="ui-label">ADMET Property Predictor &mdash; Home</div>
+          <div class="ui-sublabel">Model details, prediction input, and evaluation sections</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide54_img45.png" alt="ADMET - 34 Properties Table">
+          <div class="ui-label">All 34 ADMET Properties</div>
+          <div class="ui-sublabel">Complete list with descriptions covering absorption, distribution, metabolism, excretion, toxicity</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide54_img46.png" alt="ADMET - Features for Training">
+          <div class="ui-label">16 Molecular Descriptors for Training</div>
+          <div class="ui-sublabel">Feature descriptions with typical ranges and ADMET relevance</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide54_img47.png" alt="ADMET - Prediction Output">
+          <div class="ui-label">ADMET Prediction Output</div>
+          <div class="ui-sublabel">Color-coded results for all 34 properties with interpretation ranges</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide54_img48.png" alt="ADMET - MAE & Spearman">
+          <div class="ui-label">Evaluation &mdash; MAE & Spearman Correlation</div>
+          <div class="ui-sublabel">Mean Absolute Error per property and Spearman correlation for continuous outputs</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide24_img7.png" alt="ADMET - Sample Input">
+          <div class="ui-label">Sample Input &mdash; SMILES String</div>
+        </div>
+        <div class="ui-card full-width animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide24_img8.png" alt="ADMET - Sample Predicted Properties">
+          <div class="ui-label">Sample Output &mdash; All 34 Predicted ADMET Properties</div>
+          <div class="ui-sublabel">Predicted values for HIA, PAMPA, BBB, Bioavailability, CYP450 interactions, AMES, ClinTox, DILI, hERG, and more</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 4. SIDE EFFECT SEVERITY UI ===== -->
+    <div class="ui-module-block">
+      <div class="ui-module-header animate-on-scroll">
+        <div class="ui-mod-icon" style="background:rgba(245,158,11,0.15);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-amber)" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <h3>FDA Drug Side Effects Explorer</h3>
+        <span class="ui-mod-tag" style="background:rgba(245,158,11,0.1);color:var(--accent-amber);">Module 01</span>
+      </div>
+      <div class="ui-grid">
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide55_img49.png" alt="Side Effects - Home">
+          <div class="ui-label">Side Effects Explorer &mdash; Home</div>
+          <div class="ui-sublabel">Module details with SIDER and Severity dataset links</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide56_img51.png" alt="Side Effects - Severity Dataset">
+          <div class="ui-label">Severity Dataset Preview</div>
+          <div class="ui-sublabel">Side effect names with rank scores and frequency percentages</div>
+        </div>
+        <div class="ui-card full-width animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide56_img52.png" alt="Side Effects - Severity Calculation">
+          <div class="ui-label">Severity Index Calculation &mdash; Asthma Example</div>
+          <div class="ui-sublabel">Found 3 drugs (Prednisone, Dexamethasone, Methylprednisolone) with side effect severity x frequency scoring</div>
+        </div>
+        <div class="ui-card full-width animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide20_img5.jpg" alt="FDA Drugs - Sample Output">
+          <div class="ui-label">Sample Output &mdash; Diabetes Drug Lookup</div>
+          <div class="ui-sublabel">4 FDA-approved drugs found (Glimepiride, Glipizide, Simvastatin, Valsartan) with SMILES, top 15 side effects, severity index</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 5. MOLECULAR DOCKING UI ===== -->
+    <div class="ui-module-block">
+      <div class="ui-module-header animate-on-scroll">
+        <div class="ui-mod-icon" style="background:rgba(99,102,241,0.15);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-quantum)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+        </div>
+        <h3>Molecular Docking App</h3>
+        <span class="ui-mod-tag">Module 03</span>
+      </div>
+      <div class="ui-grid">
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide57_img53.png" alt="Docking - Home Overview">
+          <div class="ui-label">Docking App &mdash; Overview & Steps</div>
+          <div class="ui-sublabel">Model details, explanation of active torsions, and step-by-step docking instructions</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide34_img18.png" alt="Docking - Input SMILES & Protein Upload">
+          <div class="ui-label">Step 1 & 2 &mdash; Drug SMILES Input & Protein Upload</div>
+          <div class="ui-sublabel">Enter SMILES strings and upload receptor protein .pdbqt file</div>
+        </div>
+        <div class="ui-card full-width animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide35_img19.png" alt="Docking - Results & 3D Visualization">
+          <div class="ui-label">Docking Results &mdash; Active Torsions: 11</div>
+          <div class="ui-sublabel">Docking complete with 3D molecular visualization of the docked conformation</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide29_img14.png" alt="Docking - Raw Vina Output">
+          <div class="ui-label">Raw AutoDock Vina Output</div>
+          <div class="ui-sublabel">Actual terminal output showing active torsion detection</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide30_img15.png" alt="Docking - PDB Files">
+          <div class="ui-label">Manual Docking &mdash; PDB & PDBQT Files</div>
+          <div class="ui-sublabel">Drug and protein file preparation for docking</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 6. DDI UI ===== -->
+    <div class="ui-module-block">
+      <div class="ui-module-header animate-on-scroll">
+        <div class="ui-mod-icon" style="background:rgba(244,63,94,0.15);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-rose)" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Drug-Drug Interaction Predictor</h3>
+        <span class="ui-mod-tag" style="background:rgba(244,63,94,0.1);color:var(--accent-rose);">Module 05</span>
+      </div>
+      <div class="ui-grid">
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide58_img55.png" alt="DDI - Dataset 1 & Model Details">
+          <div class="ui-label">DDI Module &mdash; Dataset 1 & Model Details</div>
+          <div class="ui-sublabel">DrugBank dataset with 191,809 drug pairs and interaction descriptions</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide58_img56.png" alt="DDI - Dataset 2 & Prediction Input">
+          <div class="ui-label">Dataset 2 &mdash; Interaction Types & Prediction Input</div>
+          <div class="ui-sublabel">Transformed dataset with interaction descriptions and SMILES input fields</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide59_img57.png" alt="DDI - Prediction Input/Output">
+          <div class="ui-label">Dataset 2 Continued & Prediction Section</div>
+          <div class="ui-sublabel">Enter two drug SMILES to predict interaction class</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide44_img28.png" alt="DDI - Sample Input with Features">
+          <div class="ui-label">Sample Prediction &mdash; Molecule Features</div>
+          <div class="ui-sublabel">Extracted features (MolWt, LogP, TPSA, HBD, HBA, Rotatable bonds) for both drugs</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide45_img29.png" alt="DDI - Tanimoto & Prediction Result">
+          <div class="ui-label">Tanimoto Similarity & Prediction Result</div>
+          <div class="ui-sublabel">Fingerprint similarity score, predicted class, interaction type code, and description</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide59_img60.png" alt="DDI - Full Prediction Result">
+          <div class="ui-label">Complete DDI Prediction with Result</div>
+          <div class="ui-sublabel">Tanimoto similarity, predicted class (Y: 1), interaction description from CSV</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide59_img58.png" alt="DDI - Notebook Code Cells">
+          <div class="ui-label">Training Notebook &mdash; Code & Output Cells</div>
+          <div class="ui-sublabel">Feature extraction and model training code with output</div>
+        </div>
+        <div class="ui-card animate-on-scroll" onclick="openModal(this.querySelector('img').src)">
+          <img src="extracted_images/slide59_img59.png" alt="DDI - Evaluation Metrics">
+          <div class="ui-label">Model Evaluation &mdash; 82.16% Accuracy</div>
+          <div class="ui-sublabel">Confusion matrix, classification report with precision/recall/F1 per class</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== CONCLUSION ==================== -->
+<section class="conclusion-section">
+  <div class="section-inner">
+    <div class="section-label">Summary</div>
+    <h2 class="section-title">Key Takeaways</h2>
+    <div class="conclusion-grid">
+      <div class="conclusion-card animate-on-scroll">
+        <div class="c-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent-quantum)" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4m-10-10h4m12 0h4M5.64 5.64l2.83 2.83m7.07 7.07l2.83 2.83M5.64 18.36l2.83-2.83m7.07-7.07l2.83-2.83"/></svg>
+        </div>
+        <h4>Holistic Patient-Centric Ranking</h4>
+        <p>Combining quantum-enhanced affinity predictions with docking, ADMET, side-effect scoring, and DDI prediction delivers a truly multidimensional evaluation of cancer-comorbidity drug pairs.</p>
+      </div>
+      <div class="conclusion-card animate-on-scroll" style="transition-delay:0.15s">
+        <div class="c-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h4>Quantum-Classical Advantage</h4>
+        <p>The hybrid model uncovers subtle molecular interactions that improve binding affinity estimates beyond classical methods, strengthening overall ranking fidelity.</p>
+      </div>
+      <div class="conclusion-card animate-on-scroll" style="transition-delay:0.3s">
+        <div class="c-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent-emerald)" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <h4>Clinical Translation Focus</h4>
+        <p>Restricting to FDA-approved drugs and using validated datasets (KIBA, SIDER, DrugBank) ensures the system's recommendations are clinically relevant and actionable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer style="padding:3rem 2rem; text-align:center; border-top:1px solid var(--border); position:relative; z-index:1;">
+  <p style="color:var(--text-muted); font-size:0.8rem;">
+    Quantum Enhanced Drug Ranking System for Comorbid Patients
+    <br>
+    <span style="color:var(--text-secondary); margin-top:0.5rem; display:inline-block;">
+      Guide: Dr. Mala T &middot; Diya Arshiya S &middot; Preetham V &middot; Samiukktha D &middot; Sathyadharini S
+    </span>
+  </p>
+</footer>
+
+<script>
+// ===== PARTICLE SYSTEM =====
+const canvas = document.getElementById('particles-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+const PARTICLE_COUNT = 80;
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.vx = (Math.random() - 0.5) * 0.3;
+    this.vy = (Math.random() - 0.5) * 0.3;
+    this.radius = Math.random() * 2 + 0.5;
+    this.opacity = Math.random() * 0.4 + 0.1;
+    const colors = ['99,102,241', '34,211,238', '16,185,129', '139,92,246'];
+    this.color = colors[Math.floor(Math.random() * colors.length)];
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+      this.reset();
+    }
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < PARTICLE_COUNT; i++) {
+  particles.push(new Particle());
+}
+
+function drawConnections() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(99,102,241,${0.06 * (1 - dist / 150)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  drawConnections();
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// ===== SCROLL ANIMATIONS =====
+const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -50px 0px' };
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.animate-on-scroll, .module-card').forEach(el => {
+  observer.observe(el);
+});
+
+// ===== COUNTER ANIMATION =====
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.dataset.count);
+      let current = 0;
+      const increment = target / 40;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        el.textContent = Math.round(current);
+      }, 30);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.hero-stat .number').forEach(el => {
+  counterObserver.observe(el);
+});
+
+// ===== METRIC BAR ANIMATION =====
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const fill = entry.target.querySelector('.bar-fill');
+      if (fill) {
+        fill.style.width = fill.dataset.width + '%';
+      }
+      barObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.metric-bar').forEach(el => {
+  barObserver.observe(el);
+});
+
+// ===== SCROLL PROGRESS =====
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = (scrollTop / docHeight) * 100;
+  document.getElementById('scrollProgress').style.width = progress + '%';
+
+  // Nav scroll state
+  document.getElementById('mainNav').classList.toggle('scrolled', scrollTop > 50);
+
+  // Active nav link
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  let currentSection = '';
+  sections.forEach(section => {
+    const top = section.offsetTop - 100;
+    if (scrollTop >= top) {
+      currentSection = section.getAttribute('id');
+    }
+  });
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + currentSection) {
+      link.classList.add('active');
+    }
+  });
+});
+
+// ===== IMAGE MODAL =====
+function openModal(src) {
+  const modal = document.getElementById('imgModal');
+  document.getElementById('modalImg').src = src;
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('imgModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('imgModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeModal();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ===== QUANTUM GATE ANIMATION =====
+document.querySelectorAll('.gate').forEach((gate, i) => {
+  gate.style.animationDelay = (i * 0.1) + 's';
+  gate.addEventListener('mouseenter', () => {
+    gate.style.transform = 'scale(1.3) rotate(5deg)';
+  });
+  gate.addEventListener('mouseleave', () => {
+    gate.style.transform = 'scale(1) rotate(0)';
+  });
+});
+</script>
+</body>
+</html>
